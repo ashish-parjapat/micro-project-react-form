@@ -1,41 +1,112 @@
 import './form1.css'
-import Options from './options';
-import GetName from './getName';
-import GetEmail from './getEmail';
-import GetPassword from './GetPassword';
-import Button from './button';
+import React,{useState,useEffect} from 'react';
+import Banner from './Banner';
+import Select from 'react-select'
+const choices =[ 
+  {value:'HTML',label:'HTML'},
+  {value:'CSS',label:'CSS'},
+  {value:'Javascript',label:'Javascript'},
+  {value:'NodeJs',label:'NodeJs'},
+  {value:'Linux',label:'Linux'}
+  
+]
+
 function Form1(){
+ 
+  const[Placeholder,setPlaceholder]=useState("Enter Your Skills");
+
+
+  const[formValues,setFormValues]=useState({name:'',email:'',password:'',});
+
+  const handleChange=(e)=>{
+  // console.log(e);
+    // console.log(e.target.name);
+    // console.log(e.target.value)
+    // console.log(typeof formValues);
+    // console.log(typeof setFormValues);
+    // formValues=e.target.value;
+   
+    // console.log(setFormValues(...formValues));
+    setFormValues({...formValues,[e.target.name]:e.target.value})
+      console.log(formValues);
+   
+  
+  }
+  const[select,setSelect]=useState([]);
+  const handleSelect=(e)=>{
+    // console.log(typeof e)
+    setSelect([...e])
+    // console.log(...e);
+    console.log(e);
+    console.log(select);
+   
+
+  }
+  const isFormSubmit=()=>{
+    for(const value in formValues){
+      if(formValues[value].length===0){
+        return false;
+      }
+    }
+    return true;
+
+  }
+  const [active, setActive] = useState(false)
+   useEffect(()=>{
+    if(select.length>0&&isFormSubmit()){
+      setActive(true);
+    }
+   },[select,formValues])
+
+
+const reset=()=>{
+  alert("You got subscribed succesfully")
+  window.location.reload();
+}
+
+
+
+
+
+
  return(
     <div className="grid grid-cols-2">
 
         
-        
-<div className=" grid grid-rows-2">
-<div ><h1>Learn to code by
-watching others</h1></div>
-<div><p>See how experienced developers solve problems in real-time.</p>
-<p>Watching scripted tutorials is great, but understanding how</p>
-<p>developers think is invaluable.</p></div>
+        <Banner/>
+       
+        <div className='freeBanner  items-center justify-center'>
+ Try it free 7 days then ₹180/mo. thereafter
+ 
 
-</div>
-        <div className=''> <div className='freeBanner flex items-center justify-center'>
-        Try it free 7 days then ₹180/mo. thereafter
-        </div>
-        <div className='grid grid-rows-6 formBox  flex items-center justify-center'>
+
+        <div className='grid grid-rows-6 formBox  items-center justify-center'>
+       
+        <div><input  name='name' type="text"  placeholder='Ashish Kumar' required  onChange={handleChange} value={formValues.name} className="form-input px-4 py-3 rounded-full"/></div>
+
+          <div><input name='email' type="email"  required placeholder='ashish@gmail.com' onChange={handleChange} value={formValues.email} className="form-input px-4 py-3 rounded-full"/></div>
+
+          <div><input  name='password'  type="password"  required placeholder='******'  onChange={handleChange} value={formValues.password} className="form-input px-4 py-3 rounded-full"/></div>
+
+          <Select options={choices} onChange={handleSelect}  placeholder={Placeholder} isMulti value={select} className="form-input px-4 py-3 "  />
      
-          <GetName/>
-          <GetEmail/>
-          <GetPassword/>
-            <Options />
-            <Button />
-            
+           
+           <div> {active?  <button class="form-button-active "  onClick={reset}  >
+            CLAIM YOUR FREE TRIAL
+</button>:  <button class="form-button "   >
+            CLAIM YOUR FREE TRIAL
+</button> }
+           </div>
           
+             
+             
           
+         </div> 
            
         </div>
         </div>
 
-    </div>
+    
  )   
 }
 export default Form1;
